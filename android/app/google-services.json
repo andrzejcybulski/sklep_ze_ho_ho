@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "345002398529",
+    "project_id": "sklep-ze-ho-ho",
+    "storage_bucket": "sklep-ze-ho-ho.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345002398529:android:6bb0edcf7584200f6f07c0",
+        "android_client_info": {
+          "package_name": "com.andrzejcybulski.sklep_ze_ho_ho"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345002398529-bdgj0231r81h1n5ci7vjmq6d455hbr90.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB82jITdqoupVWqEFhMYsACXT7x7SUkm6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345002398529-bdgj0231r81h1n5ci7vjmq6d455hbr90.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
