@@ -15,6 +15,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   var errorMessage = '';
+  var isCreatingAccount = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
             radius: 80,
           ),
           const SizedBox(height: 20),
-          const Text('Logowanie'),
+          Text(isCreatingAccount == true ? 'Rejestracja' : 'Logowanie'),
           const SizedBox(height: 30),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -76,28 +77,60 @@ class _LoginPageState extends State<LoginPage> {
               backgroundColor: Colors.red,
               shape: const StadiumBorder(),
             ),
-            child: const Text('Zaloguj się'),
+            child: Text(
+                isCreatingAccount == true ? 'Zarejestruj się' : 'Zaloguj się'),
             onPressed: () async {
-              try {
-                await FirebaseAuth.instance.signInWithEmailAndPassword(
-                  email: widget.emailController.text,
-                  password: widget.passwordController.text,
-                );
-              } catch (error) {
-                setState(() {
-                  errorMessage = error.toString();
-                });
+              if (isCreatingAccount == true) {
+                //rejestracja
+                try {
+                  await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                    email: widget.emailController.text,
+                    password: widget.passwordController.text,
+                  );
+                } catch (error) {
+                  setState(
+                    () {
+                      errorMessage = error.toString();
+                    },
+                  );
+                }
+              } else {
+                //logowanie
+                try {
+                  await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: widget.emailController.text,
+                    password: widget.passwordController.text,
+                  );
+                } catch (error) {
+                  setState(
+                    () {
+                      errorMessage = error.toString();
+                    },
+                  );
+                }
               }
             },
           ),
-          TextButton(
-            child: const Text('Masz już konto? Zaloguj się'),
-            onPressed: () {},
-          ),
-          TextButton(
-            child: const Text('Nie masz konta? Zarejestruj się'),
-            onPressed: () {},
-          ),
+          if (isCreatingAccount == false) ...[
+            TextButton(
+              child: const Text('Utwórz konto'),
+              onPressed: () {
+                setState(() {
+                  isCreatingAccount = true;
+                });
+              },
+            ),
+          ],
+          if (isCreatingAccount == true) ...[
+            TextButton(
+              child: const Text('Masz już konto?'),
+              onPressed: () {
+                setState(() {
+                  isCreatingAccount = false;
+                });
+              },
+            ),
+          ],
         ],
       ),
     );
