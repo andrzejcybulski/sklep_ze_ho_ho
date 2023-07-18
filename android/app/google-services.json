@@ -29,6 +29,13 @@
             {
               "client_id": "345002398529-bdgj0231r81h1n5ci7vjmq6d455hbr90.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "345002398529-8oojbue7f9js9n26q52uevqcfc4q2uuj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.andrzejcybulski.sklepZeHoHo"
+              }
             }
           ]
         }
