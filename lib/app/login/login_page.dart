@@ -16,7 +16,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   var errorMessage = '';
   var isCreatingAccount = false;
-
+  bool isObscure = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,16 +58,25 @@ class _LoginPageState extends State<LoginPage> {
             child: TextField(
               controller: widget.passwordController,
               decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25.0),
-                ),
-                hintText: 'Hasło',
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.red),
-                  borderRadius: BorderRadius.circular(25.0),
-                ),
-              ),
-              obscureText: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                  ),
+                  hintText: 'Hasło',
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.red),
+                    borderRadius: BorderRadius.circular(25.0),
+                  ),
+                  suffixIcon: IconButton(
+                    color: Colors.grey,
+                    icon: Icon(
+                        isObscure ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        isObscure = !isObscure;
+                      });
+                    },
+                  )),
+              obscureText: isObscure,
             ),
           ),
           Text(errorMessage),
@@ -113,16 +122,22 @@ class _LoginPageState extends State<LoginPage> {
           ),
           if (isCreatingAccount == false) ...[
             TextButton(
-              child: const Text('Utwórz konto'),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.red,
+              ),
               onPressed: () {
                 setState(() {
                   isCreatingAccount = true;
                 });
               },
+              child: const Text('Utwórz konto'),
             ),
           ],
           if (isCreatingAccount == true) ...[
             TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.red,
+              ),
               child: const Text('Masz już konto?'),
               onPressed: () {
                 setState(() {

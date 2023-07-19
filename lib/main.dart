@@ -20,7 +20,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: Colors.black,
+          selectionHandleColor: Colors.transparent,
+        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: false,
       ),
       // home: const RootPage(appTitle: appTitle),
