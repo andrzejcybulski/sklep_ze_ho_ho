@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           cursorColor: Colors.black,
           selectionHandleColor: Colors.transparent,
         ),
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
+        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
         useMaterial3: false,
       ),
       // home: const RootPage(appTitle: appTitle),
