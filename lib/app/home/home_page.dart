@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sklep_ze_ho_ho/app/cart/cart_page.dart';
+import 'package:sklep_ze_ho_ho/app/settings/setting_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -19,36 +21,121 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sklep Że Ho Ho'),
-        backgroundColor: Colors.red,
-      ),
-      body: Builder(
-        builder: (context) {
-          if (currentIndex == 1) {
-            return MyAccountPageContent(email: widget.user.email);
-          }
-          return const ProductsPageContent();
-        },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (newIndex) {
-          setState(() {
-            currentIndex = newIndex;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopify),
-            label: 'Sklep',
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: const Color.fromARGB(255, 88, 84, 84),
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.settings, color: Colors.grey),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SettingsPage(),
+                        ),
+                      );
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.shopping_cart, color: Colors.grey),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => YourCartPage(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+          title: Builder(
+            builder: (context) {
+              if (currentIndex == 0) {
+                return const Text('Produkty');
+              }
+              if (currentIndex == 1) {
+                return const Text('Wyszukiwanie');
+              }
+              if (currentIndex == 2) {
+                return const Text('Ulubione');
+              }
+              return const Text('Moje konto');
+            },
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Moje konto',
-          )
-        ],
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(4.0),
+            child: Container(color: Colors.grey, height: 0.3),
+          ),
+          backgroundColor: const Color.fromARGB(255, 53, 53, 53),
+        ),
+        body: Builder(
+          builder: (context) {
+            if (currentIndex == 0) {
+              return const ProductsPageContent();
+            }
+            if (currentIndex == 1) {
+              return const Center(
+                child: Text('Szukaj'),
+              );
+            }
+
+            if (currentIndex == 2) {
+              return const Center(
+                child: Text('Ulubione'),
+              );
+            }
+
+            return MyAccountPageContent(email: widget.user.email);
+          },
+        ),
+        bottomNavigationBar: Container(
+          decoration: const BoxDecoration(
+            border: Border(
+              top: BorderSide(color: Colors.grey, width: 0.3),
+            ),
+          ),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: const Color.fromARGB(255, 53, 53, 53),
+            selectedItemColor: Colors.pink,
+            unselectedItemColor: Colors.grey,
+            elevation: 0.0,
+            currentIndex: currentIndex,
+            onTap: (newIndex) {
+              setState(() {
+                currentIndex = newIndex;
+              });
+            },
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_bag),
+                label: 'Sklep',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Szukaj',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.favorite_outline_rounded),
+                label: 'Ulubione',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Konto',
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -68,11 +155,14 @@ class MyAccountPageContent extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Jesteś zalogowany jako $email'),
+          Text(
+            'Jesteś zalogowany jako $email',
+            style: const TextStyle(color: Colors.white),
+          ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              shape: const StadiumBorder(),
+              backgroundColor: Colors.pink,
+              // shape: const StadiumBorder(),
             ),
             onPressed: () {
               FirebaseAuth.instance.signOut();
@@ -105,26 +195,13 @@ class ProductsPageContent extends StatelessWidget {
 
         final documents = snapshot.data!.docs;
 
-        return ListView(
+        return GridView.count(
+          crossAxisCount: 2,
           children: [
             for (final document in documents) ...[
               Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.redAccent),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                height: 80,
-                margin: const EdgeInsets.all(5.0),
-                padding: const EdgeInsets.all(15.0),
-                // color: Colors.redAccent,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      document['name'],
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ],
+                child: Text(
+                  document['name'],
                 ),
               ),
             ],

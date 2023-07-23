@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({
@@ -17,37 +18,53 @@ class _LoginPageState extends State<LoginPage> {
   var errorMessage = '';
   var isCreatingAccount = false;
   bool isObscure = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text('Sklep Że Ho Ho'),
-        backgroundColor: Colors.red,
-      ),
+      backgroundColor: const Color.fromARGB(255, 88, 84, 84),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 100),
           const CircleAvatar(
-            backgroundImage: AssetImage('images/santa1.jpeg'),
-            radius: 80,
+            backgroundColor: Colors.pink,
+            radius: 82,
+            child: CircleAvatar(
+              backgroundImage: AssetImage('images/santapink.jpeg'),
+              radius: 80,
+            ),
           ),
           const SizedBox(height: 20),
-          Text(isCreatingAccount == true ? 'Rejestracja' : 'Logowanie'),
+          Text(
+            'Sklep, że Ho Ho',
+            style:
+                GoogleFonts.permanentMarker(color: Colors.pink, fontSize: 40),
+          ),
+          SizedBox(height: 20),
+          Text(
+            isCreatingAccount == true ? 'Rejestracja' : 'Logowanie',
+            style: const TextStyle(color: Colors.white),
+          ),
           const SizedBox(height: 30),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: TextField(
               controller: widget.emailController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25.0),
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                filled: true,
+                fillColor: Colors.grey,
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  // borderRadius: BorderRadius.circular(25.0),
                 ),
                 hintText: 'E-mail',
+                hintStyle: TextStyle(color: Colors.white),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.red),
-                  borderRadius: BorderRadius.circular(25.0),
+                  borderSide: BorderSide(color: Colors.pink),
+                  // borderRadius: BorderRadius.circular(25.0),
                 ),
               ),
             ),
@@ -57,17 +74,22 @@ class _LoginPageState extends State<LoginPage> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: TextField(
               controller: widget.passwordController,
+              style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25.0),
+                  filled: true,
+                  fillColor: Colors.grey,
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                    // borderRadius: BorderRadius.circular(25.0),
                   ),
                   hintText: 'Hasło',
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.red),
-                    borderRadius: BorderRadius.circular(25.0),
+                  hintStyle: const TextStyle(color: Colors.white),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.pink),
+                    // borderRadius: BorderRadius.circular(25.0),
                   ),
                   suffixIcon: IconButton(
-                    color: Colors.grey,
+                    color: Colors.white,
                     icon: Icon(
                         isObscure ? Icons.visibility : Icons.visibility_off),
                     onPressed: () {
@@ -83,8 +105,8 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(height: 20),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              shape: const StadiumBorder(),
+              backgroundColor: Colors.pink,
+              // shape: const StadiumBorder(),
             ),
             child: Text(
                 isCreatingAccount == true ? 'Zarejestruj się' : 'Zaloguj się'),
@@ -123,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
           if (isCreatingAccount == false) ...[
             TextButton(
               style: TextButton.styleFrom(
-                foregroundColor: Colors.red,
+                foregroundColor: Colors.pink,
               ),
               onPressed: () {
                 setState(() {
@@ -136,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
           if (isCreatingAccount == true) ...[
             TextButton(
               style: TextButton.styleFrom(
-                foregroundColor: Colors.red,
+                foregroundColor: Colors.pink,
               ),
               child: const Text('Masz już konto?'),
               onPressed: () {

@@ -21,10 +21,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         textSelectionTheme: const TextSelectionThemeData(
-          cursorColor: Colors.black,
+          cursorColor: Colors.white,
           selectionHandleColor: Colors.transparent,
         ),
-        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
         useMaterial3: false,
       ),
       // home: const RootPage(appTitle: appTitle),
