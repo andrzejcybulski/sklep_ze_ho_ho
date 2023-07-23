@@ -24,42 +24,12 @@ class _SettingsPageState extends State<SettingsPage> {
             backgroundColor: const Color.fromARGB(255, 88, 84, 84),
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
-              leading: const BackButton(),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.settings, color: Colors.grey),
-                        onPressed: () => Navigator.of(context).pop(
-                          HomePage(user: user!),
-                        ),
-                        // {
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => HomePage(user: user!),
-                        //     ),
-                        //   );
-                        // },
-                      ),
-                      IconButton(
-                        icon:
-                            const Icon(Icons.shopping_cart, color: Colors.grey),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const YourCartPage(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+              leading: IconButton(
+                icon: Icon(Icons.close, color: Colors.grey),
+                onPressed: () => Navigator.of(context).pop(
+                  HomePage(user: user!),
                 ),
-              ],
+              ),
               title: const Text('Ustawienia'),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(4.0),

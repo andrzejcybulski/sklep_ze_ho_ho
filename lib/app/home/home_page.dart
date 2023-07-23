@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sklep_ze_ho_ho/app/cart/cart_page.dart';
 import 'package:sklep_ze_ho_ho/app/settings/setting_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -49,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => YourCartPage(),
+                          builder: (context) => const YourCartPage(),
                         ),
                       );
                     },
@@ -197,13 +198,10 @@ class ProductsPageContent extends StatelessWidget {
 
         return GridView.count(
           crossAxisCount: 2,
+          childAspectRatio: 100 / 165,
           children: [
             for (final document in documents) ...[
-              Container(
-                child: Text(
-                  document['name'],
-                ),
-              ),
+              SingleProductInListWidget(document: document),
             ],
           ],
         );
@@ -211,5 +209,61 @@ class ProductsPageContent extends StatelessWidget {
     );
   }
   // );
+}
+
+class SingleProductInListWidget extends StatelessWidget {
+  const SingleProductInListWidget({
+    super.key,
+    required this.document,
+  });
+
+  final QueryDocumentSnapshot<Map<String, dynamic>> document;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 4),
+      height: 300,
+      width: 100,
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 53, 53, 53),
+        borderRadius: BorderRadius.circular(1),
+      ),
+      margin: const EdgeInsets.all(0.5),
+
+      // color: Color.fromARGB(255, 53, 53, 53),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 4),
+          Container(
+            height: 200,
+            width: 187,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('images/produkt1.jpeg'),
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            // textAlign: ,
+            document['name'],
+            style: GoogleFonts.abel(color: Colors.white, fontSize: 20),
+          ),
+          Text(
+            document['producent'],
+            style: GoogleFonts.abel(color: Colors.white, fontSize: 15),
+          ),
+          SizedBox(height: 42),
+          Text(
+            document['price'],
+            style: GoogleFonts.abel(color: Colors.white, fontSize: 20),
+          ),
+        ],
+      ),
+    );
+  }
 }
 // }

@@ -24,57 +24,12 @@ class _YourCartPageState extends State<YourCartPage> {
             backgroundColor: const Color.fromARGB(255, 88, 84, 84),
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
-              leading: BackButton(
+              leading: IconButton(
+                icon: Icon(Icons.close, color: Colors.grey),
                 onPressed: () => Navigator.of(context).pop(
                   HomePage(user: user!),
                 ),
-                // {
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => HomePage(user: user!),
-                //     ),
-                //   );
-                // },
               ),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.settings, color: Colors.grey),
-                        onPressed: () => Navigator.of(context).pop(
-                          SettingsPage(),
-                        ),
-                        // {
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => SettingsPage(),
-                        //     ),
-                        //   );
-                        // },
-                      ),
-                      IconButton(
-                        icon:
-                            const Icon(Icons.shopping_cart, color: Colors.grey),
-                        onPressed: () => Navigator.of(context).pop(
-                          HomePage(user: user!),
-                        ),
-                        // {
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => HomePage(user: user!),
-                        //     ),
-                        //   );
-                        // },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
               title: const Text('Koszyk'),
               backgroundColor: const Color.fromARGB(255, 53, 53, 53),
             ),
