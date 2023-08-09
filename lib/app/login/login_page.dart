@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
             style:
                 GoogleFonts.permanentMarker(color: Colors.pink, fontSize: 40),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Text(
             isCreatingAccount == true ? 'Rejestracja' : 'Logowanie',
             style: const TextStyle(color: Colors.white),

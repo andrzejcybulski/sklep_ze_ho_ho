@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sklep_ze_ho_ho/app/home/home_page.dart';
-import 'package:sklep_ze_ho_ho/app/settings/setting_page.dart';
 
 class YourCartPage extends StatefulWidget {
   const YourCartPage({
@@ -25,7 +23,7 @@ class _YourCartPageState extends State<YourCartPage> {
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
               leading: IconButton(
-                icon: Icon(Icons.close, color: Colors.grey),
+                icon: const Icon(Icons.close, color: Colors.grey),
                 onPressed: () => Navigator.of(context).pop(
                   HomePage(user: user!),
                 ),

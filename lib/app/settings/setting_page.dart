@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sklep_ze_ho_ho/app/cart/cart_page.dart';
+
 import 'package:sklep_ze_ho_ho/app/home/home_page.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -25,7 +24,7 @@ class _SettingsPageState extends State<SettingsPage> {
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
               leading: IconButton(
-                icon: Icon(Icons.close, color: Colors.grey),
+                icon: const Icon(Icons.close, color: Colors.grey),
                 onPressed: () => Navigator.of(context).pop(
                   HomePage(user: user!),
                 ),
