@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sklep_ze_ho_ho/app/cart/cart_page.dart';
 import 'package:sklep_ze_ho_ho/app/settings/setting_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:favorite_button/favorite_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -12,6 +13,7 @@ class HomePage extends StatefulWidget {
   });
 
   final User user;
+  final isFavourite = false;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -22,123 +24,147 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 88, 84, 84),
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          actions: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.settings, color: Colors.grey),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SettingsPage(),
-                        ),
-                      );
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.shopping_cart, color: Colors.grey),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const YourCartPage(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
+    return
+        // WillPopScope(
+        //   onWillPop: () async => false,
+        //   child:
+        Scaffold(
+      backgroundColor: const Color.fromARGB(255, 88, 84, 84),
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.settings, color: Colors.grey),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SettingsPage(),
+                      ),
+                    );
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.shopping_cart, color: Colors.grey),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const YourCartPage(),
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
-          ],
-          title: Builder(
-            builder: (context) {
-              if (currentIndex == 0) {
-                return const Text('Produkty');
-              }
-              if (currentIndex == 1) {
-                return const Text('Wyszukiwanie');
-              }
-              if (currentIndex == 2) {
-                return const Text('Ulubione');
-              }
-              return const Text('Moje konto');
-            },
           ),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(4.0),
-            child: Container(color: Colors.grey, height: 0.3),
-          ),
-          backgroundColor: const Color.fromARGB(255, 53, 53, 53),
-        ),
-        body: Builder(
+        ],
+        title: Builder(
           builder: (context) {
             if (currentIndex == 0) {
-              return const ProductsPageContent();
+              return const Text('Produkty');
             }
             if (currentIndex == 1) {
-              return const Center(
-                child: Text('Szukaj'),
-              );
+              return const Text('Wyszukiwanie');
             }
-
             if (currentIndex == 2) {
-              return const Center(
-                child: Text('Ulubione'),
-              );
+              return const Text('Obserwowane');
             }
-
-            return MyAccountPageContent(email: widget.user.email);
+            return const Text('Moje konto');
           },
         ),
-        bottomNavigationBar: Container(
-          decoration: const BoxDecoration(
-            border: Border(
-              top: BorderSide(color: Colors.grey, width: 0.3),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(4.0),
+          child: Container(color: Colors.grey, height: 0.3),
+        ),
+        backgroundColor: const Color.fromARGB(255, 53, 53, 53),
+      ),
+      body: Builder(
+        builder: (context) {
+          if (currentIndex == 0) {
+            return const ProductsPageContent();
+          }
+          if (currentIndex == 1) {
+            return const Center(
+              child: Text('Szukaj'),
+            );
+          }
+
+          if (currentIndex == 2) {
+            return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: FirebaseFirestore.instance
+                    .collection('products')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Text('Coś poszło nie tak');
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Text('Ładowanie');
+                  }
+
+                  final documents = snapshot.data!.docs;
+
+                  return GridView.count(
+                    crossAxisCount: 1,
+                    children: [
+                      for (final document in documents) ...[
+                        if (document['favourite'] == true)
+                          SingleProductInListWidget(document: document),
+                      ],
+                    ],
+                  );
+                });
+          }
+
+          return MyAccountPageContent(email: widget.user.email);
+        },
+      ),
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(color: Colors.grey, width: 0.3),
+          ),
+        ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: const Color.fromARGB(255, 53, 53, 53),
+          selectedItemColor: Colors.pink,
+          unselectedItemColor: Colors.grey,
+          elevation: 0.0,
+          currentIndex: currentIndex,
+          onTap: (newIndex) {
+            setState(() {
+              currentIndex = newIndex;
+            });
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_bag),
+              label: 'Sklep',
             ),
-          ),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: const Color.fromARGB(255, 53, 53, 53),
-            selectedItemColor: Colors.pink,
-            unselectedItemColor: Colors.grey,
-            elevation: 0.0,
-            currentIndex: currentIndex,
-            onTap: (newIndex) {
-              setState(() {
-                currentIndex = newIndex;
-              });
-            },
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_bag),
-                label: 'Sklep',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Szukaj',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.favorite_outline_rounded),
-                label: 'Ulubione',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Konto',
-              ),
-            ],
-          ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Szukaj',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite_outline_rounded),
+              label: 'Obserwowane',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Konto',
+            ),
+          ],
         ),
       ),
     );
+    // );
   }
 }
 
@@ -211,7 +237,7 @@ class ProductsPageContent extends StatelessWidget {
   // );
 }
 
-class SingleProductInListWidget extends StatelessWidget {
+class SingleProductInListWidget extends StatefulWidget {
   const SingleProductInListWidget({
     super.key,
     required this.document,
@@ -220,9 +246,16 @@ class SingleProductInListWidget extends StatelessWidget {
   final QueryDocumentSnapshot<Map<String, dynamic>> document;
 
   @override
+  State<SingleProductInListWidget> createState() =>
+      _SingleProductInListWidgetState();
+}
+
+class _SingleProductInListWidgetState extends State<SingleProductInListWidget> {
+  var isFavourite = false;
+  @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
       height: 300,
       width: 100,
       decoration: BoxDecoration(
@@ -236,30 +269,67 @@ class SingleProductInListWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 4),
-          Container(
-            height: 200,
-            width: 187,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('images/produkt1.jpeg'),
-                fit: BoxFit.fill,
+          Stack(
+            children: [
+              Container(
+                height: 200,
+                width: 187,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('images/produkt1.jpeg'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
               ),
-            ),
+              Align(
+                alignment: Alignment.topRight,
+                child: FavoriteButton(
+                  isFavorite: false,
+                  valueChanged: (isFavorite) {},
+                ),
+
+                // IconButton(
+                //   icon: Icon(
+                //     isFavourite == false
+                //         ? Icons.favorite_border_outlined
+                //         : Icons.favorite,
+                //     color: Colors.grey,
+                //   ),
+                //   onPressed: () {
+                //     if (isFavourite == false) {
+                //       setState(
+                //         () {
+                //           isFavourite = true;
+                //         },
+                //       );
+                //     } else {
+                //       setState(() {
+                //         isFavourite = false;
+                //       });
+                //     }
+                //   },
+                // ),
+              )
+            ],
           ),
-          SizedBox(height: 5),
-          Text(
-            // textAlign: ,
-            document['name'],
-            style: GoogleFonts.abel(color: Colors.white, fontSize: 20),
+          const SizedBox(height: 5),
+          Row(
+            children: [
+              Text(
+                // textAlign: ,
+                widget.document['name'],
+                style: GoogleFonts.abel(color: Colors.white, fontSize: 20),
+              ),
+            ],
           ),
           Text(
-            document['producent'],
+            widget.document['producent'],
             style: GoogleFonts.abel(color: Colors.white, fontSize: 15),
           ),
-          SizedBox(height: 42),
+          const SizedBox(height: 15),
           Text(
-            document['price'],
-            style: GoogleFonts.abel(color: Colors.white, fontSize: 20),
+            'Cena ${widget.document['price'].toStringAsFixed(2).replaceAll('.', ',')} zł',
+            style: GoogleFonts.abel(color: Colors.white, fontSize: 25),
           ),
         ],
       ),
