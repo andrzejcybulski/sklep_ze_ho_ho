@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
 
 part 'products_state.dart';
@@ -41,7 +42,7 @@ class ProductsCubit extends Cubit<ProductsState> {
     )..onError((error) {
             emit(
               ProductsState(
-                documents: [],
+                documents: const [],
                 isLoading: false,
                 errorMessage: error.toString(),
               ),

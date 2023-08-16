@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:sklep_ze_ho_ho/app/home/home_page.dart';
+import 'package:sklep_ze_ho_ho/app/features/home/home_page.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({

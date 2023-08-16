@@ -3,7 +3,7 @@ import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sklep_ze_ho_ho/app/home/products/cubit/products_cubit.dart';
+import 'package:sklep_ze_ho_ho/app/features/home/products/cubit/products_cubit.dart';
 
 class ProductsPageContent extends StatelessWidget {
   const ProductsPageContent({

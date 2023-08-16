@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sklep_ze_ho_ho/app/cart/cart_page.dart';
-import 'package:sklep_ze_ho_ho/app/home/my_account/my_account_page_content.dart';
-import 'package:sklep_ze_ho_ho/app/home/products/products_page_content.dart';
-import 'package:sklep_ze_ho_ho/app/settings/setting_page.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:favorite_button/favorite_button.dart';
+import 'package:sklep_ze_ho_ho/app/features/home/cart/cart_page.dart';
+import 'package:sklep_ze_ho_ho/app/features/home/my_account/my_account_page_content.dart';
+import 'package:sklep_ze_ho_ho/app/features/home/products/products_page_content.dart';
+import 'package:sklep_ze_ho_ho/app/features/home/settings/setting_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
