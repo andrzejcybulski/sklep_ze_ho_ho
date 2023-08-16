@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sklep_ze_ho_ho/app/home/products/cubit/products_cubit.dart';
 
 class ProductsPageContent extends StatelessWidget {
   const ProductsPageContent({
@@ -10,29 +12,37 @@ class ProductsPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-      stream: FirebaseFirestore.instance.collection('products').snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return const Text('Coś poszło nie tak');
-        }
+    return BlocProvider(
+      create: (context) => ProductsCubit()..start(),
+      child: BlocBuilder<ProductsCubit, ProductsState>(
+        builder: (context, state) {
+          if (state.errorMessage.isNotEmpty) {
+            return Center(
+              child: Text(
+                'Coś poszło nie tak: ${state.errorMessage}',
+              ),
+            );
+          }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text('Ładowanie');
-        }
+          if (state.isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(color: Colors.white),
+            );
+          }
 
-        final documents = snapshot.data!.docs;
+          final documents = state.documents;
 
-        return GridView.count(
-          crossAxisCount: 2,
-          childAspectRatio: 100 / 165,
-          children: [
-            for (final document in documents) ...[
-              SingleProductInListWidget(document: document),
+          return GridView.count(
+            crossAxisCount: 2,
+            childAspectRatio: 100 / 165,
+            children: [
+              for (final document in documents) ...[
+                SingleProductInListWidget(document: document),
+              ],
             ],
-          ],
-        );
-      },
+          );
+        },
+      ),
     );
   }
   // );
